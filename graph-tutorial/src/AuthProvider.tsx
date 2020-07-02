@@ -14,6 +14,7 @@ export interface AuthComponentProps {
   logout: Function;
   getAccessToken: Function;
   setError: Function;
+  //history: any;
 }
 
 interface AuthProviderState {
@@ -29,11 +30,13 @@ export default function withAuthProvider<T extends React.Component<AuthComponent
 
     constructor(props: any) {
       super(props);
+      
       this.state = {
         error: null,
         isAuthenticated: false,
         user: {}
       };
+      
 
       // Initialize the MSAL application object
       this.userAgentApplication = new UserAgentApplication({

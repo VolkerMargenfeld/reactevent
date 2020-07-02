@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink as RouterNavLink } from 'react-router-dom';
 import { Table } from 'reactstrap';
 import moment from 'moment';
 import { Event } from 'microsoft-graph';
@@ -13,7 +14,7 @@ interface CalendarState {
 // Helper function to format Graph date/time
 function formatDateTime(dateTime: string | undefined) {
   if (dateTime !== undefined) {
-    return moment.utc(dateTime).local().format('M/D/YY h:mm A');
+    return moment.utc(dateTime).local().format('DD/MM/YYYY hh:mm');
   }
 }
 
@@ -24,15 +25,22 @@ class Calendar extends React.Component<AuthComponentProps, CalendarState> {
     this.state = {
       events: []
     };
+
+    //console.log("Cal props:"+JSON.stringify(props));
+    //  console.log("Cal this.props:"+JSON.stringify(this.props));
   }
 
   async componentDidMount() {
+
+    //console.log("Cal mount this.props:"+JSON.stringify(this.props));
     try {
       // Get the user's access token
       var accessToken = await this.props.getAccessToken(config.scopes);
       // Get the user's events
       var events = await getEvents(accessToken);
       // Update the array of events in state
+      // console.log(events.value);
+      // this.props.setError('ERROR', events.value);
       this.setState({events: events.value});
     }
     catch(err) {
@@ -48,6 +56,7 @@ class Calendar extends React.Component<AuthComponentProps, CalendarState> {
         <Table>
           <thead>
             <tr>
+            <th scope="col">Details</th>
               <th scope="col">Organizer</th>
               <th scope="col">Subject</th>
               <th scope="col">Start</th>
@@ -59,6 +68,7 @@ class Calendar extends React.Component<AuthComponentProps, CalendarState> {
               function(event: Event){
                 return(
                   <tr key={event.id}>
+                    <RouterNavLink to={`/calendar/${event.id}`} className="nav-link" exact>Show</RouterNavLink>
                     <td>{event.organizer?.emailAddress?.name}</td>
                     <td>{event.subject}</td>
                     <td>{formatDateTime(event.start?.dateTime)}</td>

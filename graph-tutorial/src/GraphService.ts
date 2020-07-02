@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-
+import moment from 'moment';
 // <graphServiceSnippet1>
 var graph = require('@microsoft/microsoft-graph-client');
 
@@ -29,10 +29,16 @@ export async function getUserDetails(accessToken: string) {
 export async function getEvents(accessToken: string) {
   const client = getAuthenticatedClient(accessToken);
 
+  var timequery = "startDateTime="+ moment.utc().toISOString() + "&endDateTime=" + moment.utc().add(7, 'd').toISOString();
+  //var timequery = "startDateTime="+ "2020-07-01T00:00:00-00:00" + "&endDateTime=" + "2020-07-10T00:00:00-00:00";
+
   const events = await client
-    .api('/me/events')
-    .select('subject,organizer,start,end')
-    .orderby('createdDateTime DESC')
+    //.api('/me/events')
+    //.api('/me/calendar/calendarView?startDateTime=2020-07-01T00:00:00-00:00&endDateTime=2020-07-10T00:00:00-00:00')
+    .api('/me/calendar/calendarView?' + timequery) 
+    .select('id,subject,organizer,start,end')
+    //.orderby('createdDateTime DESC')
+    .orderby('start/dateTime ASC')
     .get();
 
   return events;
