@@ -45,7 +45,7 @@ class App extends Component<AuthComponentProps> {
                   authButtonMethod={this.props.login} />
               } />
               
-            <Route  path="/calendar"
+            <Route exact path="/calendar"
               render={(props) =>
                 this.props.isAuthenticated ?
                   <Calendar {...props} /> :

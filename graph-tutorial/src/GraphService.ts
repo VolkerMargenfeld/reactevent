@@ -43,4 +43,26 @@ export async function getEvents(accessToken: string) {
 
   return events;
 }
+
+export async function getCalEvent(accessToken: string, caleventId: any) {
+  const client = getAuthenticatedClient(accessToken);
+
+  var timequery = "startDateTime="+ moment.utc().toISOString() + "&endDateTime=" + moment.utc().add(7, 'd').toISOString();
+  //var timequery = "startDateTime="+ "2020-07-01T00:00:00-00:00" + "&endDateTime=" + "2020-07-10T00:00:00-00:00";
+console.log("cgraphService-aleventId:"+caleventId);
+
+var query = JSON.stringify(caleventId);
+
+  const calevent = await client
+    //.api('/me/events')
+    //.api('/me/calendar/calendarView?startDateTime=2020-07-01T00:00:00-00:00&endDateTime=2020-07-10T00:00:00-00:00')
+    //.api('/me/calendar/calendarView?' + timequery) 
+    .api('/me/events/'+query)
+    //.select('id,subject,organizer,start,end')
+    //.orderby('createdDateTime DESC')
+    //.orderby('start/dateTime ASC')
+    .get();
+
+  return calevent;
+}
 // </getEventsSnippet>
