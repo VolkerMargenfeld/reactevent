@@ -4,7 +4,7 @@ import { Table } from 'reactstrap';
 import useForm from 'react-hooks-useform';
 
 import moment from 'moment';
-import { Event as CalEvent, Attendee, Location as CalLocation } from 'microsoft-graph';
+import { Event as CalEvent, Attendee, Location as CalLocation, ItemBody as CalItemBody } from 'microsoft-graph';
 import { config } from './Config';
 import { getEvents, getCalEvent, updateCalEvent} from './GraphService';
 import withAuthProvider, { AuthComponentProps } from './AuthProvider';
@@ -91,9 +91,23 @@ class Eventdetail extends React.Component<AuthComponentProps, EventdetailState> 
         var accessToken = await this.props.getAccessToken(config.scopes);
         // Get the user's events
 
+        //const covidMessage:string ="&#x3C;html&#x3E;&#x3C;head&#x3E;&#x3C;meta http-equiv=&#x22;Content-Type&#x22; content=&#x22;text/html; charset=utf-8&#x22;&#x3E;&#x3C;meta name=&#x22;Generator&#x22; content=&#x22;Microsoft Exchange Server&#x22;&#x3E;&#x3C;!-- converted from rtf --&#x3E;&#x3C;style&#x3E;&#x3C;!-- .EmailQuote { margin-left: 1pt; padding-left: 4pt; border-left: #800000 2px solid; } --&#x3E;&#x3C;/style&#x3E;&#x3C;/head&#x3E;&#x3C;body&#x3E;&#x3C;font face=&#x22;Calibri&#x22; size=&#x22;4&#x22;&#x3E;&#x3C;span style=&#x22;font-size:14pt;&#x22;&#x3E;&#x3C;div&#x3E;&#x3C;font color=&#x22;red&#x22;&#x3E;Hinweis: Covid-19 Schutz-Ma&#xDF;nahme&#x3C;/font&#x3E;&#x3C;/div&#x3E;&#x3C;div&#x3E;&#x3C;font color=&#x22;red&#x22;&#x3E;Meeting d&#xFC;rfen maximal 60 Minuten dauern &#x2013; anschlie&#xDF;end muss der Raum f&#xFC;r 60 Minuten ohne Teilnehmer bel&#xFC;ftet werden!&#x3C;/font&#x3E;&#x3C;/div&#x3E;&#x3C;div&#x3E;&#x3C;font color=&#x22;red&#x22;&#x3E;Dieser Hinweis darf nicht gel&#xF6;scht werden &#x2013; Corporate Security!&#x3C;/font&#x3E;&#x3C;/div&#x3E;&#x3C;div&#x3E;&#x3C;font size=&#x22;2&#x22;&#x3E;&#x3C;span style=&#x22;font-size:11pt;&#x22;&#x3E;*********************&#x3C;/span&#x3E;&#x3C;/font&#x3E;&#x3C;/div&#x3E;&#x3C;div&#x3E;&#x3C;font size=&#x22;2&#x22;&#x3E;&#x3C;span style=&#x22;font-size:11pt;&#x22;&#x3E;&#x26;nbsp;&#x3C;/span&#x3E;&#x3C;/font&#x3E;&#x3C;/div&#x3E;&#x3C;div&#x3E;&#x3C;font size=&#x22;2&#x22;&#x3E;&#x3C;span style=&#x22;font-size:11pt;&#x22;&#x3E;&#x26;nbsp;&#x3C;/span&#x3E;&#x3C;/font&#x3E;&#x3C;/div&#x3E;&#x3C;/span&#x3E;&#x3C;/font&#x3E;&#x3C;/body&#x3E;&#x3C;/html&#x3E;";
+
+        const covidMessage:string ='<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="Generator" content="Microsoft Exchange Server"><!-- converted from rtf --><style><!-- .EmailQuote { margin-left: 1pt; padding-left: 4pt; border-left: #800000 2px solid; } --></style></head><body><font face="Calibri" size="4"><span style="font-size:14pt;"><div><font color="red">Hinweis: Covid-19 Schutz-Maßnahme</font></div><div><font color="red">Meeting dürfen maximal 60 Minuten dauern – anschließend muss der Raum für 60 Minuten ohne Teilnehmer belüftet werden!</font></div><div><font color="red">Dieser Hinweis darf nicht gelöscht werden – Corporate Security!</font></div><div><font size="2"><span style="font-size:11pt;">*********************</span></font></div><div><font size="2"><span style="font-size:11pt;">&nbsp;</span></font></div><div><font size="2"><span style="font-size:11pt;">&nbsp;</span></font></div></span></font></body></html>';
+        
+        //const covidMessage:string ='<font face="Calibri" size="4"><span style="font-size:14pt;"><div><font color="red">Hinweis: Covid-19 Schutz-Maßnahme</font></div><div><font color="red">Meeting dürfen maximal 60 Minuten dauern – anschließend muss der Raum für 60 Minuten ohne Teilnehmer belüftet werden!</font></div><div><font color="red">Dieser Hinweis darf nicht gelöscht werden – Corporate Security!</font></div><div><font size="2"><span style="font-size:11pt;">*********************</span></font></div><div><font size="2"><span style="font-size:11pt;">&nbsp;</span></font></div><div><font size="2"><span style="font-size:11pt;">&nbsp;</span></font></div></span></font>';
+        
         //var changeCalLocation: CalLocation = {
         //  displayName:"09.01.01"
         //}
+        console.log("Calevent (Content type):"+this.state.calevent.body?.contentType);
+        console.log("Calevent (Content):"+this.state.calevent.body?.content);
+
+        var changeBody: CalItemBody = {
+          content:covidMessage,
+          contentType:'html'
+        }
+    
 
         var changeCalLocation: CalLocation = {
           displayName:this.state.newlocation
@@ -101,7 +115,8 @@ class Eventdetail extends React.Component<AuthComponentProps, EventdetailState> 
 
         var changeCalEvent: CalEvent = {
           //subject:"Hallo",
-          location:changeCalLocation
+          location:changeCalLocation,
+          body:changeBody
                  
         }
 
@@ -148,6 +163,9 @@ class Eventdetail extends React.Component<AuthComponentProps, EventdetailState> 
 
   render() {
     
+
+    //console.log("Calevent (Content type):"+this.state.calevent.body?.contentType);
+    //console.log("Calevent (Content):"+this.state.calevent.body?.content);
     /*
     onlineMeetingUrl:{JSON.stringify(this.state.calevent.onlineMeetingUrl)}<br/>
         onlineMeetingUrl:{this.state.calevent.onlineMeetingUrl}<br/>
