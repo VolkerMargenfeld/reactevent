@@ -1,0 +1,11 @@
+
+"my-app": {
+    "root": "",
+    "sourceRoot": "src",
+    "projectType": "application",
+    "prefix": "app",
+    "schematics": {},
+    "architect": {}
+  }
+  
+  
