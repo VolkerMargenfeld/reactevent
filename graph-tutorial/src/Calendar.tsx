@@ -14,7 +14,7 @@ interface CalendarState {
 // Helper function to format Graph date/time
 function formatDateTime(dateTime: string | undefined) {
   if (dateTime !== undefined) {
-    return moment.utc(dateTime).local().format('DD/MM/YYYY hh:mm');
+    return moment.utc(dateTime).local().format('DD/MM/YYYY HH:mm');
   }
 }
 

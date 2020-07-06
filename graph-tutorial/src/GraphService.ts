@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 import moment from 'moment';
+import { Event as CalEvent, Attendee } from 'microsoft-graph';
 // <graphServiceSnippet1>
 var graph = require('@microsoft/microsoft-graph-client');
 
@@ -64,5 +65,22 @@ var query = JSON.stringify(caleventId);
     .get();
 
   return calevent;
+}
+
+export async function updateCalEvent(accessToken: string, caleventId: any, newevent: CalEvent) {
+  const client = getAuthenticatedClient(accessToken);
+
+  
+
+  var query = JSON.stringify(caleventId);
+
+  const calevent = await client
+ 
+  .api('/me/events/'+query)
+  
+  .update(newevent); //???
+
+return calevent;
+
 }
 // </getEventsSnippet>

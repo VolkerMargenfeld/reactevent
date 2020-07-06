@@ -4,6 +4,7 @@ export const config = {
   authority: "https://login.microsoftonline.com/64322308-09a9-47a3-8c1c-b82871d60568",
   scopes: [
     'user.read',
-    'calendars.read'
+    'calendars.read',
+    'calendars.ReadWrite'
   ]
 };
